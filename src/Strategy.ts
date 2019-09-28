@@ -86,6 +86,7 @@ export class Strategy<TUser = object, TInfo = object> extends OAuth2Strategy {
                 username: json.data[0].login,
                 displayName: json.data[0].display_name,
                 aboutMe: json.data[0].description,
+                profileUrl: `https://www.twitch.tv/${json.data[0].login}`,
                 emails: json.data[0].email ? [{ value: json.data[0].email }] : [],
                 photos: buildPhotos(json.data[0]),
                 _raw: result as string,
