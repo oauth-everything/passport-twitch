@@ -1,0 +1,22 @@
+{
+  "name": "@oauth-everything/passport-twitch-example",
+  "version": "1.0.0",
+  "description": "Example app for @oauth-everything/passport-twitch",
+  "main": "index.js",
+  "scripts": {
+    "start": "ts-node ./index.ts"
+  },
+  "author": "Tyler Schrock <tschrock123@gmail.com>",
+  "license": "MIT",
+  "dependencies": {
+    "@oauth-everything/passport-twitch": "file:..",
+    "express": "^4.17.1",
+    "express-session": "^1.17.1",
+    "passport": "^0.6.0"
+  },
+  "devDependencies": {
+    "@types/express-session": "^1.17.3",
+    "@types/node": "^18.7.18",
+    "ts-node": "^10.9.1"
+  }
+}
