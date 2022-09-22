@@ -4,17 +4,14 @@
 A [Passport](http://passportjs.org/) strategy for authenticating with
 [Twitch](https://www.twitch.tv/) using OAuth 2.0 and the Twitch API.
 
-This module lets you authenticate using Twitch in your Node.js applications.
-By plugging into Passport, Twitch authentication can be easily and
-unobtrusively integrated into any application or framework that supports
-[Connect](https://www.senchalabs.org/connect/)-style middleware, including
-[Express](https://expressjs.com/).
+Note: This is not a full API client, this just handles OAuth authentication.
 
 ## Install
 
 ```bash
 $ npm install @oauth-everything/passport-twitch
 ```
+
 #### Configure Strategy
 
 The Twitch authentication strategy authenticates users using a Twitch
@@ -30,16 +27,14 @@ passport.use(new Strategy(
     {
         clientID: TWITCH_APP_ID,
         clientSecret: TWITCH_APP_SECRET,
-        callbackURL: "http://localhost:3000/auth/twitch/callback"
+        callbackURL: "http://localhost:3000/auth/twitch/callback",
     },
     (accessToken: string, refreshToken: string, profile: Profile, cb: VerifyCallback<User>) => {
-
         User.findOrCreate({ twitchId: profile.id }, (err: Error, user: User) => {
-            return cb(err, user);
-        });
-
+            return cb(err, user)
+        })
     }
-));
+))
 ```
 
 #### Authenticate Requests
@@ -51,15 +46,12 @@ For example, as route middleware in an [Express](https://expressjs.com/)
 application:
 
 ```javascript
-app.get('/auth/twitch',
-  passport.authenticate('twitch'));
+app.get('/auth/twitch', passport.authenticate('twitch'))
 
-app.get('/auth/twitch/callback',
-  passport.authenticate('twitch', { failureRedirect: '/login' }),
-  function(req, res) {
-    // Successful authentication, redirect home.
-    res.redirect('/');
-  });
+app.get("/auth/twitch/callback", passport.authenticate("twitch", {
+    failureRedirect: "/login",
+    successRedirect: "/",
+}))
 ```
 
 ## License
