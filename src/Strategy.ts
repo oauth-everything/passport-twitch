@@ -31,6 +31,7 @@ export type VerifyFunctionWithRequestAndResults<TUser, TInfo> = OAuth2VerifyFunc
 export class Strategy<TUser = object, TInfo = object> extends OAuth2Strategy {
 
     public name = "twitch";
+    private clientID: string;
 
     constructor(
         options: StrategyOptions,
@@ -60,12 +61,19 @@ export class Strategy<TUser = object, TInfo = object> extends OAuth2Strategy {
             } as OAuth2StrategyOptions,
             verify as VerifyFunction<TUser, TInfo>
         );
+        this.clientID = options.clientID;
     }
 
     public userProfile(accessToken: string, done: (err?: Error | null, profile?: Profile | null) => void): void {
 
         this._oauth2.useAuthorizationHeaderforGET(true);
-        this._oauth2.get("https://api.twitch.tv/helix/users", accessToken, (error, result) => {
+        let headers = {
+            'Authorization': "Bearer " + accessToken,
+            'Client-ID': this.clientID
+        };
+
+        //@ts-ignore
+        this._oauth2._request("GET", "https://api.twitch.tv/helix/users", headers, "", "", (error, result) => {
 
             if (error) return done(new InternalOAuthError("Failed to fetch user profile", error));
 
